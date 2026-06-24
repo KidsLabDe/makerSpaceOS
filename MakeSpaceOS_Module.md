@@ -1,6 +1,6 @@
 # MakeSpaceOS – Modul- & Komponentenstruktur (MVP-Seed)
 
-Stand: 2026-06-05
+Stand: 2026-06-24
 Grundlage: MYS-Verbrauchsdaten 2023–2026 (3 Jahre Hackdays), sortiert nach **Funktion**, nicht nach roher Stückzahl.
 
 ## Leitprinzipien
@@ -19,23 +19,27 @@ Grundlage: MYS-Verbrauchsdaten 2023–2026 (3 Jahre Hackdays), sortiert nach **F
 
 Bewusst nur zwei Einträge — das ist die Plattform-Entscheidung, nicht auf 3–5 aufgefüllt.
 
-|Komponente     |Rolle                           |Verbrauch 3J|Python     |
-|---------------|--------------------------------|------------|-----------|
-|Maker Pi RP2040|lokal / Robotik, kein Funk      |12          |MicroPython|
-|Robo ESP32     |Funk (WLAN/BT/ESP-NOW), Internet|neu         |MicroPython|
+|Komponente     |Rolle                           |Verbrauch 3J|Python        |
+|---------------|--------------------------------|------------|--------------|
+|Maker Pi RP2040|lokal / Robotik, kein Funk      |12          |CircuitPython |
+|Robo ESP32     |Funk (WLAN/BT/ESP-NOW), Internet|neu         |CircuitPython |
 
-Beide mit eingebautem Motortreiber und Grove-/Pin-Anschlüssen. Codegen-Ziel einheitlich MicroPython.
+Beide mit eingebautem Motortreiber und Grove-/Pin-Anschlüssen. Codegen-Ziel einheitlich **CircuitPython** (nicht MicroPython — anderes Bibliotheks-Ökosystem, Adafruit Bundle, einfacherer Drag-and-Drop-Upload auf CIRCUITPY-Laufwerk).
 
 ### 2. Ausgabe & Display
 
-|Komponente         |Funktion                       |Verbrauch 3J   |Teil / Quelle     |KY/Joy-IT (Plan)|
-|-------------------|------------------------------|---------------|------------------|----------------|
-|LCD 1602 I2C       |Text-Anzeige                   |40 (kombiniert)|Standard I2C-Modul|— (Standardteil)|
-|Buzzer             |Ton                            |14             |KY-006 (passiv)   |KY-006          |
-|NeoPixel 8×8 Matrix|adressierbares Licht, Animation|neu            |WS2812B           |— (Standardteil)|
-|NeoPixel Streifen  |adressierbares Licht, linear   |1              |WS2812B           |— (Standardteil)|
+|Komponente              |Funktion                            |Verbrauch 3J   |Teil / Quelle     |KY/Joy-IT (Plan)|
+|------------------------|------------------------------------|---------------|------------------|----------------|
+|LCD 1602 I2C            |Text-Anzeige (2 Zeilen + RGB-Licht) |40 (kombiniert)|Standard I2C-Modul|— (Standardteil)|
+|Buzzer                  |Ton (passiv, Frequenz einstellbar)  |14             |KY-006 (passiv)   |KY-006          |
+|NeoPixel Onboard        |2 adressierbare LEDs, direkt am Board|—             |WS2812B, GP18     |— (onboard)     |
+|NeoPixel 8×8 Matrix     |adressierbares Licht, Animation     |neu            |WS2812B, 64 LEDs  |— (Standardteil)|
+|NeoPixel Streifen       |adressierbares Licht, linear        |1              |WS2812B           |— (Standardteil)|
+|TM1637 7-Segment (4-St.)|Zahlenanzeige                       |—              |TM1637-Modul      |— (Standardteil)|
 
 Einzel-LED als absoluter Einstieg optional ergänzbar (KY-016 RGB / einfache LED, 12× genutzt).
+
+Hinweis NeoPixel: Onboard-LEDs laufen direkt über das Board. 8×8-Matrix (64 LEDs) **nicht** aus dem 3,3-V-Regler speisen – über 5 V/USB versorgen. Helligkeit ist im Editor auf 30 % begrenzt (Augenschutz, Strombegrenzung).
 
 ### 3. Sensoren Basic (Umwelt)
 
@@ -51,12 +55,12 @@ Hinweis Bodenfeuchte: kapazitive Sonde statt resistiv — resistive Sonden korro
 
 ### 4. Sensoren Mensch (Interaktion)
 
-|Komponente             |Funktion               |Verbrauch 3J       |Teil / Quelle                          |KY/Joy-IT (Plan)       |
-|-----------------------|-----------------|-------------------|---------------------------------------|-------------|
-|Sound / Lautstärke     |Gerä\\sch              |7                  |KY-038 (Mikro)                         |KY-038                 |
-|PIR-Bewegung           |Präsenz               |6                  |HC-SR501                               |— (Standardteil)|
-|Rotary Encoder         |Dreh-Eingang mit Taster|(neu, gewünscht)   |KY-040                                 |KY-040                 |
-|Capacitive Touch Keypad|12-Tasten-Eingabe (3×4)|4 (mech. Vorgänger)|Grove SEE-101020636, Grove-UART, 6,95 €|bewusste Grove-Ausnahme|
+|Komponente             |Funktion                |Verbrauch 3J       |Teil / Quelle                          |KY/Joy-IT (Plan)       |Editor-Status              |
+|-----------------------|------------------------|-------------------|---------------------------------------|-------------|---------------------------|
+|Sound / Lautstärke     |Geräusch                |7                  |KY-038 (Mikro)                         |KY-038                 |⚠️ nur als Ereignis-Block  |
+|PIR-Bewegung           |Präsenz                 |6                  |HC-SR501                               |— (Standardteil)       |❌ entfernt (zu unzuverlässig für Kinder, Debounce-Probleme) |
+|Rotary Encoder         |Dreh-Eingang mit Taster |(neu, gewünscht)   |KY-040                                 |KY-040                 |✅ Position + Ereignis ↑/↓ |
+|Capacitive Touch Keypad|12-Tasten-Eingabe (3×4) |4 (mech. Vorgänger)|Grove SEE-101020636, Grove-UART, 6,95 €|bewusste Grove-Ausnahme|⬜ noch nicht implementiert|
 
 ### 5. Motoren & Antrieb (Robotik)
 
@@ -65,7 +69,7 @@ Hinweis Bodenfeuchte: kapazitive Sonde statt resistiv — resistive Sonden korro
 |TT-Getriebemotor mit Rad|Fahrantrieb      |50              |Standard TT 3–6 V    |meistgenutztes Teil der ganzen Liste                            |
 |Servo                   |Stellantrieb     |(neu)           |SG90 o. ä.           |direkt vom Board getrieben                                      |
 |Schrittmotor + Treiber  |präziser Antrieb |15              |28BYJ-48 + ULN2003  |eher Aufbaustufe                                               |
-|Wasserpumpe             |Gießen (Pflanzen)|(neu, gewünscht)|Mini-Tauchpumpe 3–6 V|nicht direkt an GPIO; über Motorkanal oder Relais/MOSFET treiben|
+|Wasserpumpe             |Gießen (Pflanzen)|(neu, gewünscht)|Mini-Tauchpumpe 3–6 V|nicht direkt an GPIO; über Motorkanal treiben → im Editor: Motor-Blöcke verwenden|
 
 Separater Motortreiber entfällt: Maker Pi RP2040 und Robo ESP32 haben ihn eingebaut (Grove I2C-Treiber war mit 17× genutzt — wird überflüssig).
 
