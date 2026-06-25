@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>makerSpaceOS – Visual Programming for Maker-Pi RP2040</title>
+    <!-- Fonts -->
+    <link rel="stylesheet" href="makerSpaceOS-Editor/css/fonts.css">
+    <style>
+        :root {
+            --bg: #FBF8F3;
+            --bg-alt: #F3EDE1;
+            --surface: #ffffff;
+            --line: #E5DFD0;
+            --line-strong: #1a1a1a;
+            --text: #111111;
+            --text-muted: #64748b;
+            --brand-orange: #F39A1B;
+            --brand-teal: #4AB8A6;
+            --brand-purple: #A57BC3;
+            --brand-coral: #E98685;
+            --brand-sky: #4FBFE8;
+            --brand-yellow: #F7D94C;
+            --brand-red: #E24D3D;
+            --brand-blue: #2563eb;
+            --accent: #4AB8A6;
+            --font-body: 'Inter', system-ui, sans-serif;
+            --font-display: 'Pixelify Sans', ui-rounded, cursive, system-ui;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --shadow: 4px 4px 0px var(--line-strong);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-display);
+            line-height: 1.1;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section { padding: 80px 0; }
+
+        /* --- Header --- */
+        header {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid var(--line-strong);
+            background: var(--surface);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-logo img { height: 32px; width: auto; }
+        .nav-logo span {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--brand-teal); }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid var(--line-strong);
+            font-family: var(--font-body);
+        }
+
+        .btn-primary {
+            background: var(--brand-teal);
+            color: #0d2b27;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--line-strong);
+        }
+
+        .btn-primary:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--line-strong);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            text-align: center;
+            padding: 120px 0 80px;
+            background: radial-gradient(circle at top right, var(--brand-yellow), transparent 40%),
+                        radial-gradient(circle at bottom left, var(--brand-sky), transparent 40%);
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 82px);
+            margin-bottom: 24px;
+            color: var(--text);
+        }
+
+        .hero p {
+            font-size: clamp(18px, 3vw, 22px);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: var(--text-muted);
+        }
+
+        /* --- Features Section --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--line-strong);
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+        }
+
+        /* --- CTA Section --- */
+        .cta-section {
+            background: var(--brand-purple);
+            color: white;
+            text-align: center;
+            border-top: 3px solid var(--line-strong);
+            border-bottom: 3px solid var(--line-strong);
+        }
+
+        .cta-section h2 {
+            font-size: 42px;
+            margin-bottom: 24px;
+        }
+
+        .cta-section p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--brand-purple);
+            border-color: var(--line-strong);
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            background: var(--bg-alt);
+            border-top: 1px solid var(--line);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero { padding: 60px 0; }
+            section { padding: 60px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <a href="#" class="nav-logo">
+                <img src="makerSpaceOS-Editor/assets/kids-lab-logo-breit.png" alt="KidsLab">
+                <span>makerSpaceOS</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#about">Über uns</a>
+                <a href="makerSpaceOS-Editor/index.html" class="btn btn-primary">Editor öffnen</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Code visuell,<br>Ergebnisse real.</h1>
+            <p>Die intuitive Blockly-Umgebung für den Cytron Maker-Pi RP2040. Lerne Programmieren durch Experimentieren – ohne Syntaxfehler.</p>
+            <a href="makerSpaceOS-Editor/index.html" class="btn btn-primary" style="font-size: 20px; padding: 16px 32px;">Jetzt loslegen →</a>
+        </div>
+    </section>
+
+    <section id="features" class="container">
+        <h2 style="text-align: center; font-size: 42px; margin-bottom: 48px;">Warum makerSpaceOS?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🧩</span>
+                <h3>Visuelles Coding</h3>
+                <p>Kein Tippen, kein Suchen nach Klammern. Baue Logik einfach per Drag-and-Drop mit farbigen Blöcken zusammen.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <h3>Echtzeit-Ausführung</h3>
+                <p>Dank Web Serial API wird dein Code direkt auf den Maker-Pi RP2040 geladen und ausgeführt. Sofortiges Feedback!</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🤖</span>
+                <h3>KI-Unterstützung</h3>
+                <p>Hast du eine Idee, weißt aber nicht, welcher Block passt? Unser KI-Generator hilft dir beim Erstellen komplexer Logiken.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎓</span>
+                <h3>Bildungsorientiert</h3>
+                <p>Speziell für Schulen und Maker-Spaces entwickelt. Einfache Sprache, klare Strukturen und maximale Motivation.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Bereit für dein erstes Projekt?</h2>
+            <p>Verbinde dein Board und beginne heute damit, die Welt der Elektronik zu entdecken.</p>
+            <a href="makerSpaceOS-Editor/index.html" class="btn btn-white" style="font-size: 20px; padding: 16px 32px;">Zum Editor springen</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 KidsLab & MakeYourSchool. Erstellt für die nächste Generation von Erfindern.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
