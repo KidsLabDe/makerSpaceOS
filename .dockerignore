@@ -1,0 +1,20 @@
+# VCS & Tooling
+.git
+**/.git
+.gitmodules
+**/.gitignore
+**/.claude
+.github
+
+# Docker-Dateien selbst
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Doku / Notizen (nicht ins Image)
+**/*.md
+makerSpaceOS-Editor/docs/
+makerSpaceOS-Editor/TODO.md
+
+# OS-Müll
+**/.DS_Store

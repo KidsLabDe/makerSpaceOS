@@ -1,0 +1,34 @@
+/* makerSpaceOS — Design Tokens
+   Crayon-Palette aus dem KidsLab Design System + Logo-Leitfarben.
+   Schriften via Google Fonts (siehe @import unten oder selbst hosten). */
+
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+:root {
+  /* --- Markenfarben (Logo-Segmente, im Uhrzeigersinn ab oben) --- */
+  --brand-orange: #F39A1B;
+  --brand-yellow: #F7D94C;
+  --brand-teal:   #4AB8A6;  /* Leitfarbe „OS" + Prompt-Unterstrich */
+  --brand-sky:    #4FBFE8;
+  --brand-purple: #A57BC3;
+  --brand-coral:  #E98685;
+  --brand-red:    #E24D3D;  /* Alert/Urgency (aus KidsLab) */
+
+  /* --- Neutrale --- */
+  --ink:    #111111;  /* Text, Outlines, Prompt > */
+  --line:   #1a1a1a;  /* monochrome Variante */
+  --paper:  #FBF8F3;  /* warmes Papier-Weiß, Standard-Hintergrund */
+  --surface-dark: #15171c; /* dunkler Grund für Invers-Logo */
+  --fg-muted: #6b6258;
+
+  /* --- Schriften --- */
+  --font-display: 'Pixelify Sans', ui-rounded, 'Marker Felt', cursive, system-ui; /* nur H1–H6, Logo-Wortmarke, Display */
+  --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;        /* Fließtext, UI, Buttons */
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', monospace;             /* Code, Prompt-Optik */
+
+  /* --- Sticker-Motiv (optionaler KidsLab-Akzent) --- */
+  --line-strong: #1a1a1a;
+  --shadow-sticker: 3px 3px 0 var(--line-strong); /* harter Versatz, kein Blur */
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
