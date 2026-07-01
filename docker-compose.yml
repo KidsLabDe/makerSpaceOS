@@ -10,10 +10,10 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
       # HTTP
-      - "traefik.http.routers.mso.rule=Host(`mso.kidslab.de`)"
+      - "traefik.http.routers.mso.rule=Host(`mos.kidslab.de`)"
       - "traefik.http.routers.mso.entryPoints=web"
       # HTTPS
-      - "traefik.http.routers.mso-ssl.rule=Host(`mso.kidslab.de`)"
+      - "traefik.http.routers.mso-ssl.rule=Host(`mos.kidslab.de`)"
       - "traefik.http.routers.mso-ssl.entryPoints=websecure"
       - "traefik.http.routers.mso-ssl.tls=true"
       - "traefik.http.routers.mso-ssl.tls.certresolver=myresolver"
