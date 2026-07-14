@@ -61,10 +61,15 @@ kostet nur zwei `git fetch`. Ein Lock verhindert überlappende Builds.
 Einmalig auf dem Server (Repo z. B. unter `/srv/makerspaceos`):
 
 ```bash
-git clone --recurse-submodules https://codeberg.org/KidsLab/makerSpaceOS.git /srv/makerspaceos
-chmod +x /srv/makerspaceos/deploy/autodeploy.sh
+git clone --recurse-submodules ssh://git@codeberg.org/KidsLab/makerSpaceOS.git /srv/makerspaceos
 crontab -e
 ```
+
+> **SSH-Key nötig:** Dieses Repo ist privat — auf dem Server einen Key erzeugen
+> (`ssh-keygen -t ed25519`) und den Public Key auf Codeberg als **Deploy Key**
+> (nur Lesen) hinterlegen: Repo → Einstellungen → Deploy-Schlüssel. Das
+> Editor-Submodul ist öffentlich und wird per HTTPS geladen — dafür ist kein
+> Key nötig.
 
 Cron-Zeile (als Benutzer mit Docker-Rechten):
 

@@ -18,7 +18,9 @@ exec 9>"/tmp/makerspaceos-deploy.lock"
 flock -n 9 || exit 0
 
 before=$(git rev-parse HEAD)
-sub_before=$(git -C makerSpaceOS-Editor rev-parse HEAD 2>/dev/null || echo "none")
+# Achtung: ohne .git-Prüfung würde rev-parse im leeren Submodul-Ordner zum
+# Eltern-Repo hochlaufen und dessen HEAD liefern.
+sub_before=$([ -e makerSpaceOS-Editor/.git ] && git -C makerSpaceOS-Editor rev-parse HEAD || echo "none")
 
 # Eltern-Repo auf origin/main bringen (nur Fast-Forward, lokale Commits blocken)
 git fetch --quiet origin
