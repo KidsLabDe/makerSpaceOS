@@ -1,0 +1,25 @@
+services:
+  makerspaceos:
+    build: .
+    # Alternativ ein vorgebautes Image aus der Registry verwenden:
+    # image: ghcr.io/kidslabde/makerspaceos:latest
+    image: makerspaceos:latest
+    container_name: makerspaceos-prod
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      # HTTP
+      - "traefik.http.routers.mso.rule=Host(`mos.kidslab.de`)"
+      - "traefik.http.routers.mso.entryPoints=web"
+      # HTTPS
+      - "traefik.http.routers.mso-ssl.rule=Host(`mos.kidslab.de`)"
+      - "traefik.http.routers.mso-ssl.entryPoints=websecure"
+      - "traefik.http.routers.mso-ssl.tls=true"
+      - "traefik.http.routers.mso-ssl.tls.certresolver=myresolver"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

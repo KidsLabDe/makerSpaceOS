@@ -3,397 +3,497 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>makerSpaceOS – Visual Programming for Maker-Pi RP2040</title>
-    <!-- Fonts -->
-    <link rel="stylesheet" href="makerSpaceOS-Editor/css/fonts.css">
+    <title>makerSpaceOS – Hardware programmieren mit Blöcken, im Browser</title>
+    <meta name="description" content="makerSpaceOS ist eine visuelle Programmierumgebung für Hackdays in Schulen und Makerspaces. Blöcke verbinden, per USB auf den Mikrocontroller laden, läuft sofort. Open Source, ohne Konto, ohne Server – alles lokal im Browser.">
+
+    <!-- Favicons / App-Icons (aus design/) -->
+    <link rel="icon" href="design/svg/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="design/favicon/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="design/favicon/favicon-16.png" sizes="16x16" type="image/png">
+    <link rel="apple-touch-icon" href="design/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="design/favicon/site.webmanifest">
+    <meta name="theme-color" content="#15171c">
+
     <style>
+        /* ===== Lokale Schriften (kein externer CDN-Request) ===== */
+        @font-face {
+            font-family: 'Inter'; font-style: normal; font-weight: 100 900; font-display: swap;
+            src: url('assets/fonts/inter-latin.woff2') format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        @font-face {
+            font-family: 'Inter'; font-style: normal; font-weight: 100 900; font-display: swap;
+            src: url('assets/fonts/inter-latin-ext.woff2') format('woff2');
+            unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+        }
+        @font-face {
+            font-family: 'Pixelify Sans'; font-style: normal; font-weight: 400 700; font-display: swap;
+            src: url('assets/fonts/pixelify-latin.woff2') format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        @font-face {
+            font-family: 'Pixelify Sans'; font-style: normal; font-weight: 400 700; font-display: swap;
+            src: url('assets/fonts/pixelify-latin-ext.woff2') format('woff2');
+            unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+        }
+
+        /* ===== Marken-Tokens (aus design/STYLEGUIDE.md) ===== */
         :root {
-            --bg: #FBF8F3;
-            --bg-alt: #F3EDE1;
-            --surface: #ffffff;
-            --line: #E5DFD0;
-            --line-strong: #1a1a1a;
-            --text: #111111;
-            --text-muted: #64748b;
-            --brand-orange: #F39A1B;
-            --brand-teal: #4AB8A6;
-            --brand-purple: #A57BC3;
-            --brand-coral: #E98685;
-            --brand-sky: #4FBFE8;
-            --brand-yellow: #F7D94C;
-            --brand-red: #E24D3D;
-            --brand-blue: #2563eb;
-            --accent: #4AB8A6;
-            --font-body: 'Inter', system-ui, sans-serif;
-            --font-display: 'Pixelify Sans', ui-rounded, cursive, system-ui;
-            --radius-md: 12px;
-            --radius-lg: 24px;
-            --shadow: 4px 4px 0px var(--line-strong);
+            --orange: #F39A1B;
+            --yellow: #F7D94C;
+            --teal:   #4AB8A6;
+            --teal-ink: #0d2b27;
+            --teal-deep: #0f6b5c;
+            --sky:    #4FBFE8;
+            --purple: #A57BC3;
+            --coral:  #E98685;
+            --red:    #E24D3D;
+            --ink:    #111111;
+            --line:   #1a1a1a;
+            --paper:  #FBF8F3;
+            --paper-2:#F3EDE1;
+            --surface:#ffffff;
+            --dark:   #15171c;
+            --muted:  #475569;
+            --muted-2:#6b6258;
+            --font-display: 'Pixelify Sans', ui-rounded, 'Marker Felt', cursive, system-ui;
+            --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            --font-mono:    ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code', Menlo, monospace;
+            --maxw: 1120px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --shadow: 3px 3px 0 var(--line);
+            --shadow-lg: 5px 5px 0 var(--line);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
+        html { scroll-behavior: smooth; }
         body {
             font-family: var(--font-body);
-            background: var(--bg);
-            color: var(--text);
+            background: var(--paper);
+            color: var(--ink);
             line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
+        h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; }
+        a { color: inherit; }
+        img { max-width: 100%; display: block; }
+        .accent { color: var(--teal); }
 
-        h1, h2, h3 {
+        .container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; width: 100%; }
+        section { padding: clamp(48px, 7vw, 80px) 0; }
+
+        .eyebrow {
+            display: inline-block;
             font-family: var(--font-display);
-            line-height: 1.1;
-        }
-
-        /* --- Layout --- */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        section { padding: 80px 0; }
-
-        /* --- Header --- */
-        header {
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 3px solid var(--line-strong);
-            background: var(--surface);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .nav-logo img { height: 32px; width: auto; }
-        .nav-logo span {
-            font-family: var(--font-display);
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 600;
-            font-size: 15px;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover { color: var(--brand-teal); }
-
-        #lang-select {
-            border: 2px solid var(--line-strong);
-            border-radius: var(--radius-md);
-            background: var(--surface);
-            color: var(--text);
-            font-family: var(--font-body);
-            font-weight: 700;
             font-size: 14px;
-            padding: 6px 10px;
-            cursor: pointer;
+            border-radius: 999px;
+            padding: 4px 13px;
+            border: 2px solid var(--line);
+            box-shadow: 2px 2px 0 var(--line);
         }
+        .h2 { font-size: clamp(28px, 5vw, 40px); margin: clamp(18px, 3vw, 36px) 0 8px; }
+        .lead { font-size: clamp(15px, 2.4vw, 17px); color: var(--muted); }
 
-        /* --- Buttons --- */
+        /* ===== Badges (Status) ===== */
+        .pill {
+            font-size: 11px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+            border-radius: 999px; padding: 2px 10px; white-space: nowrap; border: 1.5px solid;
+        }
+        .pill-on  { color: var(--teal-deep); background: #d8f0ea; border-color: var(--teal-deep); }
+        .pill-soon{ color: #8a4d00; background: #fde3c2; border-color: #8a4d00; }
+
+        /* ===== Buttons ===== */
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 24px;
-            border-radius: var(--radius-md);
-            font-weight: 700;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 2px solid var(--line-strong);
-            font-family: var(--font-body);
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            font-family: var(--font-body); font-weight: 700; font-size: 15px; text-decoration: none;
+            padding: 12px 22px; border: 2.5px solid var(--line); border-radius: 10px; cursor: pointer;
+            transition: transform .15s ease, box-shadow .15s ease;
         }
+        .btn-primary { background: var(--teal); color: var(--teal-ink); box-shadow: var(--shadow-lg); font-family: var(--font-display); font-weight: 600; font-size: 18px; }
+        .btn-ghost   { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-lg); }
+        .btn-primary:hover, .btn-ghost:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--line); }
+        .btn-primary:active, .btn-ghost:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--line); }
+        .btn-sm { padding: 9px 16px; font-size: 14px; box-shadow: var(--shadow); }
 
-        .btn-primary {
-            background: var(--brand-teal);
-            color: #0d2b27;
-            box-shadow: var(--shadow);
+        /* ===== Header / Nav ===== */
+        header {
+            height: 70px; display: flex; align-items: center; position: sticky; top: 0; z-index: 100;
+            background: var(--surface); border-bottom: 2.5px solid var(--line);
         }
-
-        .btn-primary:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px var(--line-strong);
+        .nav { display: flex; align-items: center; gap: 16px; width: 100%; }
+        .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .brand svg { height: 34px; width: auto; }
+        .brand .word { font-family: var(--font-display); font-size: 22px; font-weight: 600; }
+        .nav-links { display: flex; align-items: center; gap: 22px; margin-left: auto; }
+        .nav-links a.link { font-size: 15px; font-weight: 500; text-decoration: none; color: #1e293b; }
+        .nav-links a.link:hover { color: var(--teal); }
+        .nav-toggle { display: none; }
+        .burger {
+            display: none; margin-left: auto; flex-direction: column; gap: 5px; justify-content: center;
+            width: 44px; height: 44px; border: 2px solid var(--line); border-radius: 9px; background: var(--paper); cursor: pointer;
         }
+        .burger span { display: block; width: 22px; height: 2.5px; margin: 0 auto; background: var(--ink); border-radius: 2px; transition: .25s; }
 
-        .btn-primary:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px var(--line-strong);
+        /* ===== Hero ===== */
+        .hero { background:
+            radial-gradient(circle at 88% -5%, rgba(247,217,76,.5), transparent 40%),
+            radial-gradient(circle at 5% 110%, rgba(79,191,232,.4), transparent 42%); }
+        .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(28px, 5vw, 52px); align-items: center; }
+        .hero h1 { font-size: clamp(34px, 6vw, 52px); margin: 18px 0 16px; letter-spacing: -.01em; }
+        .hl-mark { background: var(--yellow); box-shadow: 0 -2px 0 var(--line) inset, 0 3px 0 var(--yellow); padding: 0 4px; }
+        .hero p { font-size: clamp(16px, 2.6vw, 18px); color: #1e293b; margin-bottom: 24px; max-width: 56ch; }
+        .hero-cta { display: flex; flex-wrap: wrap; gap: 13px; align-items: center; }
+        .hero-note { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 13.5px; color: var(--muted); }
+
+        /* Block-Stack-Illustration */
+        .blockstack-wrap { display: flex; justify-content: center; }
+        .blockstack { position: relative; width: min(330px, 100%); transform: rotate(1.5deg); }
+        .blockstack-bg { position: absolute; inset: -14px; background: var(--surface); border: 2.5px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-lg); }
+        .blockstack-inner { position: relative; padding: 6px 4px; }
+        .blk { position: relative; border: 2.5px solid var(--line); border-radius: 9px; padding: 11px 14px; margin-top: 8px; color: #fff; }
+        .blk:first-child { margin-top: 0; }
+        .blk .nub { position: absolute; top: -8px; left: 22px; width: 26px; height: 9px; border: 2.5px solid var(--line); border-bottom: none; border-radius: 4px 4px 0 0; }
+        .blk-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+        .blk-purple { background: var(--purple); } .blk-purple .nub { background: var(--purple); }
+        .blk-coral  { background: var(--coral); }  .blk-coral .nub  { background: var(--coral); }
+        .blk-teal   { background: var(--teal); }   .blk-teal .nub   { background: var(--teal); }
+        .blk b { font-size: 13px; } .blk small { font-size: 12px; opacity: .92; }
+        .chip { display: inline-flex; align-items: center; gap: 6px; background: #fff; color: var(--ink); border: 2px solid var(--line); border-radius: 6px; padding: 3px 9px; font-size: 12px; font-weight: 700; }
+        .swatch { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid var(--line); }
+
+        /* ===== Editor-Vorschau ===== */
+        .live { background: var(--paper-2); border-top: 2.5px solid var(--line); border-bottom: 2.5px solid var(--line); }
+        .live-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+        .browser { border: 2.5px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-lg); overflow: hidden; background: #fff; }
+        .browser-bar { display: flex; align-items: center; gap: 8px; padding: 9px 13px; border-bottom: 2px solid var(--line); }
+        .tdot { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--line); }
+        .browser-url { margin-left: 10px; flex: 1; background: var(--paper); border: 1.5px solid var(--line); border-radius: 6px; padding: 4px 12px; font: 12px var(--font-mono); color: var(--muted); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .live-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 22px; }
+        .note-box { display: flex; gap: 10px; max-width: 48ch; background: #fff; border: 2px solid var(--line); border-left: 6px solid var(--red); border-radius: 8px; padding: 10px 14px; font-size: 13.5px; color: #1e293b; }
+
+        /* ===== Karten-Grids ===== */
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .card { background: var(--paper); border: 2px solid var(--line); border-radius: 12px; padding: 20px 22px; }
+        .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .card-head h3 { font-size: 18px; margin: 0; }
+        .card-head .pill { margin-left: auto; }
+        .card p { font-size: 14.5px; color: #1e293b; }
+        .card .soon-note { font-size: 12.5px; color: #8a4d00; margin-top: 8px; }
+
+
+        /* Hardware */
+        .hw { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        .hw-card { position: relative; background: var(--surface); border: 2.5px solid var(--line); border-radius: 12px; padding: 24px; box-shadow: var(--shadow-lg); }
+        .hw-card.soon { border-style: dashed; border-color: #94a3b8; box-shadow: none; }
+        .hw-card h3 { font-size: clamp(20px, 3vw, 24px); margin: 12px 0 6px; }
+        .hw-card.soon h3, .hw-card.soon p { color: var(--muted); }
+        .hw-card p { font-size: 14.5px; color: #1e293b; margin-bottom: 12px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag { font-size: 12px; background: var(--paper); border: 1.5px solid var(--line); border-radius: 6px; padding: 3px 9px; }
+
+        /* Open / Datensparsam */
+        .open-box { position: relative; background: var(--teal); color: #fff; border: 2.5px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-lg); padding: clamp(24px, 4vw, 40px); }
+        .open-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: center; }
+        .open-box h2 { color: #fff; font-size: clamp(26px, 4vw, 34px); margin: 14px 0 12px; }
+        .open-box .lead { color: #f0fbf8; }
+        .open-cards { display: flex; flex-direction: column; gap: 12px; }
+        .open-card { background: #fff; color: var(--ink); border: 2.5px solid var(--line); border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .open-card.dark { background: var(--ink); color: #fff; }
+        .open-card .t { font-family: var(--font-display); font-size: 16px; }
+        .open-card .s { font-size: 12.5px; color: var(--muted); }
+        .open-card.dark .s { color: #cbd5e1; }
+
+        /* Kontakt */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 44px); align-items: center; }
+        .form-box { background: var(--surface); border: 2.5px solid var(--line); border-radius: 12px; padding: 24px; box-shadow: var(--shadow-lg); }
+        .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+        .field label { font-size: 13px; font-weight: 600; }
+        .field input, .field textarea { width: 100%; padding: 10px 12px; border: 2px solid var(--line); border-radius: 7px; font: inherit; font-size: 14px; background: var(--paper); resize: vertical; }
+        .form-box button { width: 100%; background: var(--yellow); color: var(--ink); font-family: var(--font-display); font-size: 17px; border: 2.5px solid var(--line); border-radius: 9px; box-shadow: var(--shadow); padding: 12px; cursor: pointer; }
+        .form-box button:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--line); }
+
+        /* About + FAQ */
+        .about-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: clamp(28px, 5vw, 48px); align-items: start; }
+        .stat { display: inline-flex; align-items: center; gap: 12px; background: var(--paper); border: 2px solid var(--line); border-radius: 10px; padding: 12px 16px; }
+        .stat .big { font-family: var(--font-display); color: var(--ink); }
+        details { background: var(--paper); border: 2px solid var(--line); border-radius: 9px; margin-bottom: 10px; }
+        summary { cursor: pointer; list-style: none; padding: 14px 16px; font-family: var(--font-display); font-size: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        summary::-webkit-details-marker { display: none; }
+        summary .plus { font-size: 20px; transition: transform .2s; }
+        details[open] summary .plus { transform: rotate(45deg); }
+        details .answer { padding: 0 16px 16px; font-size: 14.5px; color: #1e293b; line-height: 1.55; }
+
+        /* Footer */
+        footer { background: var(--ink); color: #cbd5e1; padding: 40px 0; }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 28px; }
+        .footer-grid .word { font-family: var(--font-display); font-size: 22px; color: #fff; }
+        .footer-col h4 { font-family: var(--font-display); font-weight: 600; font-size: 15px; color: #fff; margin-bottom: 8px; }
+        .footer-col a { display: block; color: #cbd5e1; text-decoration: none; font-size: 14px; margin-bottom: 7px; }
+        .footer-col a:hover { color: #fff; }
+        .footer-grid p { font-size: 13px; color: #94a3b8; margin-top: 10px; line-height: 1.6; }
+
+        ::selection { background: var(--yellow); color: var(--ink); }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 860px) {
+            .hero-grid, .open-grid, .contact-grid, .about-grid { grid-template-columns: 1fr; }
+            .hw { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .blockstack-wrap { order: -1; margin-bottom: 8px; }
+            .open-grid { gap: 24px; }
         }
-
-        /* --- Hero Section --- */
-        .hero {
-            text-align: center;
-            padding: 120px 0 80px;
-            background: radial-gradient(circle at top right, var(--brand-yellow), transparent 40%),
-                        radial-gradient(circle at bottom left, var(--brand-sky), transparent 40%);
-        }
-
-        .hero h1 {
-            font-size: clamp(48px, 8vw, 82px);
-            margin-bottom: 24px;
-            color: var(--text);
-        }
-
-        .hero p {
-            font-size: clamp(18px, 3vw, 22px);
-            max-width: 700px;
-            margin: 0 auto 40px;
-            color: var(--text-muted);
-        }
-
-        /* --- Features Section --- */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 32px;
-            margin-top: 48px;
-        }
-
-        .feature-card {
-            background: var(--surface);
-            padding: 32px;
-            border-radius: var(--radius-lg);
-            border: 2px solid var(--line-strong);
-            box-shadow: var(--shadow);
-            transition: transform 0.2s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            font-size: 40px;
-            margin-bottom: 16px;
-            display: block;
-        }
-
-        .feature-card h3 {
-            font-size: 24px;
-            margin-bottom: 12px;
-        }
-
-        .feature-card p {
-            color: var(--text-muted);
-        }
-
-        /* --- CTA Section --- */
-        .cta-section {
-            background: var(--brand-purple);
-            color: white;
-            text-align: center;
-            border-top: 3px solid var(--line-strong);
-            border-bottom: 3px solid var(--line-strong);
-        }
-
-        .cta-section h2 {
-            font-size: 42px;
-            margin-bottom: 24px;
-        }
-
-        .cta-section p {
-            font-size: 20px;
-            margin-bottom: 40px;
-            opacity: 0.9;
-        }
-
-        .btn-white {
-            background: white;
-            color: var(--brand-purple);
-            border-color: var(--line-strong);
-        }
-
-        /* --- Footer --- */
-        footer {
-            padding: 40px 0;
-            text-align: center;
-            background: var(--bg-alt);
-            border-top: 1px solid var(--line);
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        /* --- Responsive --- */
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero { padding: 60px 0; }
-            section { padding: 60px 0; }
+        @media (max-width: 640px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            .burger { display: flex; }
+            .nav-links {
+                position: absolute; top: 70px; left: 0; right: 0; flex-direction: column; gap: 0; margin: 0;
+                background: var(--surface); border-bottom: 2.5px solid var(--line);
+                max-height: 0; overflow: hidden; transition: max-height .3s ease;
+            }
+            .nav-toggle:checked ~ .nav-links { max-height: 460px; }
+            .nav-links a.link { width: 100%; padding: 15px 20px; border-top: 1px solid #E5DFD0; }
+            .nav-links a.btn { margin: 14px 20px; }
+            .nav-toggle:checked ~ .burger span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+            .nav-toggle:checked ~ .burger span:nth-child(2) { opacity: 0; }
+            .nav-toggle:checked ~ .burger span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
         }
     </style>
 </head>
-<body>
+<body id="top">
 
+    <!-- ===================== HEADER ===================== -->
     <header>
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-            <a href="#" class="nav-logo">
-                <img src="makerSpaceOS-Editor/assets/kids-lab-logo-breit.png" alt="KidsLab">
-                <span>makerSpaceOS</span>
+        <div class="container nav">
+            <a href="#top" class="brand" aria-label="makerSpaceOS Startseite">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 100" fill="none" aria-hidden="true">
+                    <g stroke-width="8" stroke-linecap="butt">
+                        <line x1="37.5" y1="11.9" x2="72.5" y2="11.9" stroke="#F39A1B"/><line x1="79.25" y1="15.797" x2="96.75" y2="46.103" stroke="#F7D94C"/><line x1="96.75" y1="53.897" x2="79.25" y2="84.203" stroke="#4AB8A6"/><line x1="72.5" y1="88.1" x2="37.5" y2="88.1" stroke="#4FBFE8"/><line x1="30.75" y1="84.203" x2="13.25" y2="53.897" stroke="#A57BC3"/><line x1="13.25" y1="46.103" x2="30.75" y2="15.797" stroke="#E98685"/>
+                    </g>
+                    <g fill="none" stroke-width="3.6">
+                        <circle cx="33" cy="11.9" r="5.5" stroke="#F39A1B"/><circle cx="77" cy="11.9" r="5.5" stroke="#F7D94C"/><circle cx="99" cy="50" r="5.5" stroke="#4AB8A6"/><circle cx="77" cy="88.1" r="5.5" stroke="#4FBFE8"/><circle cx="33" cy="88.1" r="5.5" stroke="#A57BC3"/><circle cx="11" cy="50" r="5.5" stroke="#E98685"/>
+                    </g>
+                    <polyline points="43,40 54,50 43,60" fill="none" stroke="#111111" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="59" y1="60" x2="69" y2="60" stroke="#4AB8A6" stroke-width="6.5" stroke-linecap="round"/>
+                </svg>
+                <span class="word">makerSpace<span class="accent">OS</span></span>
             </a>
-            <div style="display: flex; align-items: center; gap: 16px;">
-                <nav class="nav-links">
-                    <a href="#features" id="nav-features">Features</a>
-                    <a href="#about" id="nav-about">Über uns</a>
-                    <a href="makerSpaceOS-Editor/index.html" class="btn btn-primary" id="nav-editor-btn">Editor öffnen</a>
-                </nav>
-                <select id="lang-select" title="Sprache wählen">
-                    <option value="de">DE</option>
-                    <option value="en">EN</option>
-                </select>
-            </div>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle">
+            <label for="nav-toggle" class="burger" aria-label="Menü"><span></span><span></span><span></span></label>
+            <nav class="nav-links">
+                <a href="#kann" class="link">Was es kann</a>
+                <a href="#hardware" class="link">Hardware</a>
+                <a href="#offen" class="link">Datenschutz</a>
+                <a href="#faq" class="link">FAQ</a>
+                <a href="#kontakt" class="link">Kontakt</a>
+                <a href="/editor/" class="btn btn-sm" style="background:var(--teal);color:var(--teal-ink);">Editor öffnen</a>
+            </nav>
         </div>
     </header>
 
-    <section class="hero">
-        <div class="container">
-            <h1 id="hero-h1">Code visuell,<br>Ergebnisse real.</h1>
-            <p id="hero-p">Die intuitive Blockly-Umgebung für den Cytron Maker-Pi RP2040. Lerne Programmieren durch Experimentieren – ohne Syntaxfehler.</p>
-            <a href="makerSpaceOS-Editor/index.html" class="btn btn-primary" style="font-size: 20px; padding: 16px 32px;" id="hero-cta">Jetzt loslegen →</a>
-        </div>
-    </section>
+    <main>
+        <!-- ===================== HERO ===================== -->
+        <section class="hero">
+            <div class="container hero-grid">
+                <div>
+                    <span class="eyebrow" style="background:var(--yellow); transform:rotate(-1.5deg);">Hackdays in Schulen &amp; Makerspaces</span>
+                    <h1>Hardware programmieren mit Blöcken — im Browser, <span class="hl-mark">ohne Löten.</span></h1>
+                    <p>makerSpaceOS ist eine visuelle Programmierumgebung für Hackdays in Schulen und Makerspaces. Blöcke verbinden, per USB auf den Mikrocontroller laden, läuft sofort. Im Hintergrund entsteht echter Python-Code.</p>
+                    <div class="hero-cta">
+                        <a href="/editor/" class="btn btn-primary">Editor ausprobieren</a>
+                        <a href="#kontakt" class="btn btn-ghost">Test-Kit anfragen</a>
+                    </div>
+                    <div class="hero-note">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+                        Läuft direkt im Browser — in Chrome oder Edge am Laptop/PC.
+                    </div>
+                </div>
+                <div class="blockstack-wrap">
+                    <div class="blockstack">
+                        <div class="blockstack-bg"></div>
+                        <div class="blockstack-inner">
+                            <div class="blk blk-purple"><b>SETUP</b><br><small>läuft einmal beim Start</small></div>
+                            <div class="blk blk-coral"><span class="nub"></span><div class="blk-row"><b>NeoPixel Farbe:</b> <span class="chip"><span class="swatch" style="background:var(--red);"></span>Rot</span></div></div>
+                            <div class="blk blk-coral"><span class="nub"></span><div class="blk-row"><b>Warte</b> <span class="chip">1</span> <b>Sekunden</b></div></div>
+                            <div class="blk blk-coral"><span class="nub"></span><div class="blk-row"><b>NeoPixel Farbe:</b> <span class="chip"><span class="swatch" style="background:var(--teal);"></span>Grün</span></div></div>
+                            <div class="blk blk-teal"><span class="nub"></span><b style="letter-spacing:.03em;">FÜR IMMER</b></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <section id="features" class="container">
-        <h2 style="text-align: center; font-size: 42px; margin-bottom: 48px;" id="features-h2">Warum makerSpaceOS?</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <span class="feature-icon">🧩</span>
-                <h3 id="feature1-h3">Visuelles Coding</h3>
-                <p id="feature1-p">Kein Tippen, kein Suchen nach Klammern. Baue Logik einfach per Drag-and-Drop mit farbigen Blöcken zusammen.</p>
+        <!-- ===================== EDITOR-VORSCHAU ===================== -->
+        <section class="live">
+            <div class="container">
+                <div class="live-head">
+                    <span class="eyebrow" style="background:var(--sky);">Live</span>
+                    <h2 class="h2">Editor direkt ausprobieren</h2>
+                </div>
+                <p class="lead" style="max-width:70ch; margin-bottom:24px;">Kein Download, keine Installation, kein Konto. Du öffnest den Editor, verbindest Blöcke und lädst dein Programm direkt auf das Board. Probier es jetzt aus — auch ohne Hardware kannst du im Editor herumbauen.</p>
+                <div class="browser">
+                    <div class="browser-bar">
+                        <span class="tdot" style="background:var(--red);"></span><span class="tdot" style="background:var(--yellow);"></span><span class="tdot" style="background:var(--teal);"></span>
+                        <span class="browser-url">mso.kidslab.de/editor</span>
+                    </div>
+                    <a href="/editor/" aria-label="Editor öffnen">
+                        <img src="assets/img/editor-preview.png" alt="makerSpaceOS Editor: Blöcke links, generierter Python-Code rechts" width="1168" height="750" loading="lazy">
+                    </a>
+                </div>
+                <div class="live-foot">
+                    <a href="/editor/" class="btn btn-primary">Jetzt im Browser starten</a>
+                    <div class="note-box">Zum Aufspielen aufs Board braucht es Chrome oder Edge an einem Laptop/PC (Web&nbsp;Serial). Auf iPad, Safari und Firefox funktioniert das Übertragen nicht.</div>
+                </div>
             </div>
-            <div class="feature-card">
-                <span class="feature-icon">⚡</span>
-                <h3 id="feature2-h3">Echtzeit-Ausführung</h3>
-                <p id="feature2-p">Dank Web Serial API wird dein Code direkt auf den Maker-Pi RP2040 geladen und ausgeführt. Sofortiges Feedback!</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🤖</span>
-                <h3 id="feature3-h3">KI-Unterstützung</h3>
-                <p id="feature3-p">Hast du eine Idee, weißt aber nicht, welcher Block passt? Unser KI-Generator hilft dir beim Erstellen komplexer Logiken.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🎓</span>
-                <h3 id="feature4-h3">Bildungsorientiert</h3>
-                <p id="feature4-p">Speziell für Schulen und Maker-Spaces entwickelt. Einfache Sprache, klare Strukturen und maximale Motivation.</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="cta-section">
-        <div class="container">
-            <h2 id="cta-h2">Bereit für dein erstes Projekt?</h2>
-            <p id="cta-p">Verbinde dein Board und beginne heute damit, die Welt der Elektronik zu entdecken.</p>
-            <a href="makerSpaceOS-Editor/index.html" class="btn btn-white" style="font-size: 20px; padding: 16px 32px;" id="cta-btn">Zum Editor springen</a>
-        </div>
-    </section>
+        <!-- ===================== WAS ES KANN ===================== -->
+        <section id="kann" class="container">
+            <h2 class="h2">Was es kann</h2>
+            <p class="lead" style="margin-bottom:28px;">Ehrlich sortiert — was heute schon geht und was noch kommt.</p>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-head"><h3>Blöcke, die mitwachsen</h3><span class="pill pill-on">Jetzt nutzbar</span></div>
+                    <p>Anfangen mit Blöcken, bei Bedarf eigenen Code schreiben oder Anpassungen machen. Wächst vom Einstieg bis zum freien Programmieren mit.</p>
+                </div>
+                <div class="card">
+                    <div class="card-head"><h3>Kein Löten, günstige Bauteile</h3><span class="pill pill-on">Jetzt nutzbar</span></div>
+                    <p>Grove-Module zum Einstecken oder günstige KY-Bauteile mit Jumper-Kabeln. Vorhandenes Grove-Material lässt sich weiternutzen.</p>
+                </div>
+                <div class="card">
+                    <div class="card-head"><h3>Läuft komplett im Browser</h3><span class="pill pill-on">Jetzt nutzbar</span></div>
+                    <p>Anonym, ohne Konto, ohne Server.</p>
+                </div>
+                <div class="card">
+                    <div class="card-head"><h3>Speichern ohne Konto</h3><span class="pill pill-on">Jetzt nutzbar</span></div>
+                    <p>Projekte werden automatisch im Browser gesichert und lassen sich dauerhaft aufs Board schreiben.</p>
+                    <p class="soon-note">Projekt-Export als Datei: in Vorbereitung.</p>
+                </div>
+                <div class="card">
+                    <div class="card-head"><h3>KI-Block-Helfer</h3><span class="pill pill-on">Jetzt nutzbar</span></div>
+                    <p>Erzeugt einzelne Bausteine als Hilfe, aber das Kind behält Ablauf, Logik und Regeln selbst in der Hand. Keine Maschine, die das Programm fertig macht.</p>
+                </div>
+                <div class="card">
+                    <div class="card-head"><h3>Funk, WLAN und IoT</h3><span class="pill pill-soon">In Vorbereitung</span></div>
+                    <p>Mit dem Robo-ESP32-Board — in Vorbereitung.</p>
+                </div>
+            </div>
+        </section>
 
+        <!-- ===================== HARDWARE ===================== -->
+        <section id="hardware" class="container" style="padding-top:0;">
+            <h2 class="h2">Hardware</h2>
+            <p class="lead" style="margin-bottom:28px;">Niedrige Einstiegskosten — ein Board reicht. Grove und günstige KY-Bauteile lassen sich anschließen.</p>
+            <div class="hw">
+                <div class="hw-card">
+                    <span class="pill pill-on">Jetzt nutzbar</span>
+                    <h3>Maker Pi RP2040</h3>
+                    <p>Ein günstiges Board ab 15 €, das fast alles schon mitbringt: Motortreiber, zwei Taster, zwei NeoPixel-LEDs, sieben Grove-Anschlüsse, Servo-Anschlüsse, Buzzer. Mehr braucht der Einstieg nicht.</p>
+                    <div class="tags"><span class="tag">7× Grove</span><span class="tag">Motortreiber</span><span class="tag">2× NeoPixel</span><span class="tag">Buzzer</span></div>
+                </div>
+                <div class="hw-card soon">
+                    <span class="pill pill-soon">In Vorbereitung</span>
+                    <h3>Robo ESP32</h3>
+                    <p>Dasselbe Board mit ESP32-Chip — schaltet Funk, WLAN und IoT frei. In Vorbereitung.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== OFFEN & DATENSPARSAM ===================== -->
+        <section id="offen" class="container">
+            <div class="open-box">
+                <div class="open-grid">
+                    <div>
+                        <span class="eyebrow" style="background:#fff; color:var(--teal-deep);">Für deutsche Schulen gebaut</span>
+                        <h2>Offen und datensparsam</h2>
+                        <p class="lead">makerSpaceOS ist Open Source und läuft als statische Seite. Es gibt keinen Server, kein Konto und keine Anmeldung. Es werden keine Schülerdaten gespeichert oder übertragen — alles passiert lokal im Browser.</p>
+                    </div>
+                    <div class="open-cards">
+                        <div class="open-card">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0f6b5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+                            <div><div class="t">Open Source</div><div class="s">Lizenz wird vor Veröffentlichung festgelegt</div></div>
+                        </div>
+                        <a class="open-card dark" href="https://codeberg.org/KidsLab/makerSpaceOS" target="_blank" rel="noopener">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M12 2 2 19.7h20L12 2Zm0 4.6 5.9 10.3-5.9-2-5.9 2L12 6.6Z"/></svg>
+                            <div><div class="t">Auf Codeberg ansehen</div><div class="s">Quellcode &amp; Issues</div></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== TEST-KIT / KONTAKT ===================== -->
+        <section id="kontakt" class="live" style="border-bottom:none;">
+            <div class="container contact-grid">
+                <div>
+                    <h2 class="h2">Test-Kit anfragen</h2>
+                    <p class="lead" style="max-width:48ch; margin-bottom:22px;">Du willst makerSpaceOS an deiner Schule oder in deinem Makerspace ausprobieren? Melde dich — wir besprechen gemeinsam, welche Hardware passt und wie ein Hackday damit ablaufen kann.</p>
+                    <a href="mailto:team@kidslab.de?subject=Test-Kit%20makerSpaceOS" class="btn btn-primary">Kontakt aufnehmen</a>
+                    <p style="font-size:13.5px; color:var(--muted); margin-top:14px;">oder direkt an <a href="mailto:team@kidslab.de" style="color:var(--teal-deep); font-weight:600;">team@kidslab.de</a></p>
+                </div>
+                <form class="form-box" onsubmit="return sendContact(this)">
+                    <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" type="text" placeholder="Dein Name"></div>
+                    <div class="field"><label for="f-org">Schule / Einrichtung</label><input id="f-org" name="org" type="text" placeholder="z. B. Mittelschule Musterstadt"></div>
+                    <div class="field"><label for="f-msg">Nachricht</label><textarea id="f-msg" name="msg" rows="3" placeholder="Was hast du vor?"></textarea></div>
+                    <button type="submit">Anfrage senden</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ===================== WER DAHINTER STEHT + FAQ ===================== -->
+        <section id="faq" class="container">
+            <div class="about-grid">
+                <div>
+                    <h2 class="h2">Wer dahinter steht</h2>
+                    <p class="lead" style="margin-bottom:18px; color:#1e293b;">Entstanden beim KidsLab Augsburg aus drei Jahren Hackday-Praxis. Die Auswahl an Bauteilen und Blöcken stammt aus rund 80 echten Teilnehmer-Projekten — also aus dem, was mit Kindern wirklich funktioniert.</p>
+                    <div class="stat"><span class="big" style="font-size:22px;">~80</span><div style="font-size:13.5px; color:var(--muted); line-height:1.4;"><strong style="color:var(--ink);">Projekte</strong><br>aus echter Hackday-Praxis</div></div>
+                </div>
+                <div>
+                    <h2 class="h2" style="margin-bottom:16px;">FAQ</h2>
+                    <details><summary>Welche Geräte brauche ich?<span class="plus">+</span></summary><div class="answer">Laptop oder PC mit Chrome oder Edge. Kein iPad — siehe Geräte-Hinweis.</div></details>
+                    <details><summary>Was kostet die Hardware pro Kind?<span class="plus">+</span></summary><div class="answer">Board ab 15 €, dazu wenige günstige Bauteile.</div></details>
+                    <details><summary>Brauche ich als Lehrkraft Programmierkenntnisse?<span class="plus">+</span></summary><div class="answer">Nein.</div></details>
+                    <details><summary>Ab welchem Alter?<span class="plus">+</span></summary><div class="answer">Ab ca. 9 Jahren.</div></details>
+                    <details><summary>Welche Bauteile passen?<span class="plus">+</span></summary><div class="answer">Die meisten gängigen Grove-Sensoren und günstige KY-Module. Hinweis: die Ports liefern 3,3 V, nicht jedes 5-V-Modul läuft automatisch.</div></details>
+                    <details><summary>Was passiert mit den Daten?<span class="plus">+</span></summary><div class="answer">Nichts verlässt den Browser. Kein Konto, kein Server.</div></details>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===================== FOOTER ===================== -->
     <footer>
-        <div class="container">
-            <p id="footer-p">&copy; 2026 KidsLab & MakeYourSchool. Erstellt für die nächste Generation von Erfindern.</p>
+        <div class="container footer-grid">
+            <div>
+                <span class="word">makerSpace<span class="accent">OS</span></span>
+                <p>Ein Projekt der KidsLab — Digitale Bildung gGmbH.<br><a href="https://kidslab.de" target="_blank" rel="noopener" style="color:#94a3b8;">kidslab.de</a></p>
+            </div>
+            <div class="footer-col">
+                <h4>Projekt</h4>
+                <a href="/editor/">Editor</a>
+                <a href="https://codeberg.org/KidsLab/makerSpaceOS" target="_blank" rel="noopener">Codeberg / Quellcode</a>
+                <a href="mailto:team@kidslab.de">Kontakt</a>
+            </div>
+            <div class="footer-col">
+                <h4>Rechtliches</h4>
+                <a href="https://kidslab.de/impressum/" target="_blank" rel="noopener">Impressum</a>
+                <a href="https://kidslab.de/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>
+            </div>
         </div>
     </footer>
 
     <script>
-    (function () {
-        var STORAGE_KEY = 'makerspaceos.lang';
-
-        var translations = {
-            de: {
-                'nav-features': 'Features',
-                'nav-about': 'Über uns',
-                'nav-editor-btn': 'Editor öffnen',
-                'hero-h1': 'Code visuell,<br>Ergebnisse real.',
-                'hero-p': 'Die intuitive Blockly-Umgebung für den Cytron Maker-Pi RP2040. Lerne Programmieren durch Experimentieren – ohne Syntaxfehler.',
-                'hero-cta': 'Jetzt loslegen →',
-                'features-h2': 'Warum makerSpaceOS?',
-                'feature1-h3': 'Visuelles Coding',
-                'feature1-p': 'Kein Tippen, kein Suchen nach Klammern. Baue Logik einfach per Drag-and-Drop mit farbigen Blöcken zusammen.',
-                'feature2-h3': 'Echtzeit-Ausführung',
-                'feature2-p': 'Dank Web Serial API wird dein Code direkt auf den Maker-Pi RP2040 geladen und ausgeführt. Sofortiges Feedback!',
-                'feature3-h3': 'KI-Unterstützung',
-                'feature3-p': 'Hast du eine Idee, weißt aber nicht, welcher Block passt? Unser KI-Generator hilft dir beim Erstellen komplexer Logiken.',
-                'feature4-h3': 'Bildungsorientiert',
-                'feature4-p': 'Speziell für Schulen und Maker-Spaces entwickelt. Einfache Sprache, klare Strukturen und maximale Motivation.',
-                'cta-h2': 'Bereit für dein erstes Projekt?',
-                'cta-p': 'Verbinde dein Board und beginne heute damit, die Welt der Elektronik zu entdecken.',
-                'cta-btn': 'Zum Editor springen',
-                'footer-p': '&copy; 2026 KidsLab &amp; MakeYourSchool. Erstellt für die nächste Generation von Erfindern.'
-            },
-            en: {
-                'nav-features': 'Features',
-                'nav-about': 'About us',
-                'nav-editor-btn': 'Open editor',
-                'hero-h1': 'Code visually,<br>results for real.',
-                'hero-p': 'The intuitive Blockly environment for the Cytron Maker-Pi RP2040. Learn to code through experimentation – no syntax errors.',
-                'hero-cta': 'Get started →',
-                'features-h2': 'Why makerSpaceOS?',
-                'feature1-h3': 'Visual coding',
-                'feature1-p': 'No typing, no hunting for brackets. Build logic simply by dragging and dropping colorful blocks.',
-                'feature2-h3': 'Real-time execution',
-                'feature2-p': 'Thanks to the Web Serial API, your code loads onto the Maker-Pi RP2040 and runs instantly. Immediate feedback!',
-                'feature3-h3': 'AI assistance',
-                'feature3-p': "Got an idea but don't know which block fits? Our AI generator helps you build complex logic.",
-                'feature4-h3': 'Education-focused',
-                'feature4-p': 'Designed specifically for schools and makerspaces. Simple language, clear structure, maximum motivation.',
-                'cta-h2': 'Ready for your first project?',
-                'cta-p': 'Connect your board and start exploring the world of electronics today.',
-                'cta-btn': 'Jump to the editor',
-                'footer-p': '&copy; 2026 KidsLab &amp; MakeYourSchool. Built for the next generation of inventors.'
-            }
-        };
-
-        function detectLang() {
-            try {
-                var stored = localStorage.getItem(STORAGE_KEY);
-                if (stored === 'de' || stored === 'en') return stored;
-            } catch (e) { /* localStorage evtl. nicht verfügbar */ }
-            var nav = ((navigator.language || navigator.userLanguage || 'de') + '').toLowerCase();
-            return nav.indexOf('de') === 0 ? 'de' : 'en';
+        function sendContact(form) {
+            var name = form.name.value.trim();
+            var org  = form.org.value.trim();
+            var msg  = form.msg.value.trim();
+            var body = 'Name: ' + name + '\n' + 'Schule / Einrichtung: ' + org + '\n\n' + msg;
+            window.location.href = 'mailto:team@kidslab.de?subject=' +
+                encodeURIComponent('Test-Kit makerSpaceOS') +
+                '&body=' + encodeURIComponent(body);
+            return false;
         }
-
-        function applyLang(lang) {
-            document.documentElement.lang = lang;
-            var dict = translations[lang];
-            for (var id in dict) {
-                var el = document.getElementById(id);
-                if (el) el.innerHTML = dict[id];
-            }
-            var sel = document.getElementById('lang-select');
-            if (sel) sel.value = lang;
-        }
-
-        function setLang(lang) {
-            if (lang !== 'de' && lang !== 'en') return;
-            try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) { /* ignorieren */ }
-            applyLang(lang);
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            applyLang(detectLang());
-            var sel = document.getElementById('lang-select');
-            if (sel) sel.addEventListener('change', function () { setLang(sel.value); });
-        });
-    })();
     </script>
 
 </body>
