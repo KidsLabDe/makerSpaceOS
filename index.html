@@ -99,6 +99,18 @@
 
         .nav-links a:hover { color: var(--brand-teal); }
 
+        #lang-select {
+            border: 2px solid var(--line-strong);
+            border-radius: var(--radius-md);
+            background: var(--surface);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 14px;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+
         /* --- Buttons --- */
         .btn {
             display: inline-flex;
@@ -239,61 +251,150 @@
                 <img src="makerSpaceOS-Editor/assets/kids-lab-logo-breit.png" alt="KidsLab">
                 <span>makerSpaceOS</span>
             </a>
-            <nav class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#about">Über uns</a>
-                <a href="makerSpaceOS-Editor/index.html" class="btn btn-primary">Editor öffnen</a>
-            </nav>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <nav class="nav-links">
+                    <a href="#features" id="nav-features">Features</a>
+                    <a href="#about" id="nav-about">Über uns</a>
+                    <a href="makerSpaceOS-Editor/index.html" class="btn btn-primary" id="nav-editor-btn">Editor öffnen</a>
+                </nav>
+                <select id="lang-select" title="Sprache wählen">
+                    <option value="de">DE</option>
+                    <option value="en">EN</option>
+                </select>
+            </div>
         </div>
     </header>
 
     <section class="hero">
         <div class="container">
-            <h1>Code visuell,<br>Ergebnisse real.</h1>
-            <p>Die intuitive Blockly-Umgebung für den Cytron Maker-Pi RP2040. Lerne Programmieren durch Experimentieren – ohne Syntaxfehler.</p>
-            <a href="makerSpaceOS-Editor/index.html" class="btn btn-primary" style="font-size: 20px; padding: 16px 32px;">Jetzt loslegen →</a>
+            <h1 id="hero-h1">Code visuell,<br>Ergebnisse real.</h1>
+            <p id="hero-p">Die intuitive Blockly-Umgebung für den Cytron Maker-Pi RP2040. Lerne Programmieren durch Experimentieren – ohne Syntaxfehler.</p>
+            <a href="makerSpaceOS-Editor/index.html" class="btn btn-primary" style="font-size: 20px; padding: 16px 32px;" id="hero-cta">Jetzt loslegen →</a>
         </div>
     </section>
 
     <section id="features" class="container">
-        <h2 style="text-align: center; font-size: 42px; margin-bottom: 48px;">Warum makerSpaceOS?</h2>
+        <h2 style="text-align: center; font-size: 42px; margin-bottom: 48px;" id="features-h2">Warum makerSpaceOS?</h2>
         <div class="features-grid">
             <div class="feature-card">
                 <span class="feature-icon">🧩</span>
-                <h3>Visuelles Coding</h3>
-                <p>Kein Tippen, kein Suchen nach Klammern. Baue Logik einfach per Drag-and-Drop mit farbigen Blöcken zusammen.</p>
+                <h3 id="feature1-h3">Visuelles Coding</h3>
+                <p id="feature1-p">Kein Tippen, kein Suchen nach Klammern. Baue Logik einfach per Drag-and-Drop mit farbigen Blöcken zusammen.</p>
             </div>
             <div class="feature-card">
                 <span class="feature-icon">⚡</span>
-                <h3>Echtzeit-Ausführung</h3>
-                <p>Dank Web Serial API wird dein Code direkt auf den Maker-Pi RP2040 geladen und ausgeführt. Sofortiges Feedback!</p>
+                <h3 id="feature2-h3">Echtzeit-Ausführung</h3>
+                <p id="feature2-p">Dank Web Serial API wird dein Code direkt auf den Maker-Pi RP2040 geladen und ausgeführt. Sofortiges Feedback!</p>
             </div>
             <div class="feature-card">
                 <span class="feature-icon">🤖</span>
-                <h3>KI-Unterstützung</h3>
-                <p>Hast du eine Idee, weißt aber nicht, welcher Block passt? Unser KI-Generator hilft dir beim Erstellen komplexer Logiken.</p>
+                <h3 id="feature3-h3">KI-Unterstützung</h3>
+                <p id="feature3-p">Hast du eine Idee, weißt aber nicht, welcher Block passt? Unser KI-Generator hilft dir beim Erstellen komplexer Logiken.</p>
             </div>
             <div class="feature-card">
                 <span class="feature-icon">🎓</span>
-                <h3>Bildungsorientiert</h3>
-                <p>Speziell für Schulen und Maker-Spaces entwickelt. Einfache Sprache, klare Strukturen und maximale Motivation.</p>
+                <h3 id="feature4-h3">Bildungsorientiert</h3>
+                <p id="feature4-p">Speziell für Schulen und Maker-Spaces entwickelt. Einfache Sprache, klare Strukturen und maximale Motivation.</p>
             </div>
         </div>
     </section>
 
     <section class="cta-section">
         <div class="container">
-            <h2>Bereit für dein erstes Projekt?</h2>
-            <p>Verbinde dein Board und beginne heute damit, die Welt der Elektronik zu entdecken.</p>
-            <a href="makerSpaceOS-Editor/index.html" class="btn btn-white" style="font-size: 20px; padding: 16px 32px;">Zum Editor springen</a>
+            <h2 id="cta-h2">Bereit für dein erstes Projekt?</h2>
+            <p id="cta-p">Verbinde dein Board und beginne heute damit, die Welt der Elektronik zu entdecken.</p>
+            <a href="makerSpaceOS-Editor/index.html" class="btn btn-white" style="font-size: 20px; padding: 16px 32px;" id="cta-btn">Zum Editor springen</a>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 KidsLab & MakeYourSchool. Erstellt für die nächste Generation von Erfindern.</p>
+            <p id="footer-p">&copy; 2026 KidsLab & MakeYourSchool. Erstellt für die nächste Generation von Erfindern.</p>
         </div>
     </footer>
+
+    <script>
+    (function () {
+        var STORAGE_KEY = 'makerspaceos.lang';
+
+        var translations = {
+            de: {
+                'nav-features': 'Features',
+                'nav-about': 'Über uns',
+                'nav-editor-btn': 'Editor öffnen',
+                'hero-h1': 'Code visuell,<br>Ergebnisse real.',
+                'hero-p': 'Die intuitive Blockly-Umgebung für den Cytron Maker-Pi RP2040. Lerne Programmieren durch Experimentieren – ohne Syntaxfehler.',
+                'hero-cta': 'Jetzt loslegen →',
+                'features-h2': 'Warum makerSpaceOS?',
+                'feature1-h3': 'Visuelles Coding',
+                'feature1-p': 'Kein Tippen, kein Suchen nach Klammern. Baue Logik einfach per Drag-and-Drop mit farbigen Blöcken zusammen.',
+                'feature2-h3': 'Echtzeit-Ausführung',
+                'feature2-p': 'Dank Web Serial API wird dein Code direkt auf den Maker-Pi RP2040 geladen und ausgeführt. Sofortiges Feedback!',
+                'feature3-h3': 'KI-Unterstützung',
+                'feature3-p': 'Hast du eine Idee, weißt aber nicht, welcher Block passt? Unser KI-Generator hilft dir beim Erstellen komplexer Logiken.',
+                'feature4-h3': 'Bildungsorientiert',
+                'feature4-p': 'Speziell für Schulen und Maker-Spaces entwickelt. Einfache Sprache, klare Strukturen und maximale Motivation.',
+                'cta-h2': 'Bereit für dein erstes Projekt?',
+                'cta-p': 'Verbinde dein Board und beginne heute damit, die Welt der Elektronik zu entdecken.',
+                'cta-btn': 'Zum Editor springen',
+                'footer-p': '&copy; 2026 KidsLab &amp; MakeYourSchool. Erstellt für die nächste Generation von Erfindern.'
+            },
+            en: {
+                'nav-features': 'Features',
+                'nav-about': 'About us',
+                'nav-editor-btn': 'Open editor',
+                'hero-h1': 'Code visually,<br>results for real.',
+                'hero-p': 'The intuitive Blockly environment for the Cytron Maker-Pi RP2040. Learn to code through experimentation – no syntax errors.',
+                'hero-cta': 'Get started →',
+                'features-h2': 'Why makerSpaceOS?',
+                'feature1-h3': 'Visual coding',
+                'feature1-p': 'No typing, no hunting for brackets. Build logic simply by dragging and dropping colorful blocks.',
+                'feature2-h3': 'Real-time execution',
+                'feature2-p': 'Thanks to the Web Serial API, your code loads onto the Maker-Pi RP2040 and runs instantly. Immediate feedback!',
+                'feature3-h3': 'AI assistance',
+                'feature3-p': "Got an idea but don't know which block fits? Our AI generator helps you build complex logic.",
+                'feature4-h3': 'Education-focused',
+                'feature4-p': 'Designed specifically for schools and makerspaces. Simple language, clear structure, maximum motivation.',
+                'cta-h2': 'Ready for your first project?',
+                'cta-p': 'Connect your board and start exploring the world of electronics today.',
+                'cta-btn': 'Jump to the editor',
+                'footer-p': '&copy; 2026 KidsLab &amp; MakeYourSchool. Built for the next generation of inventors.'
+            }
+        };
+
+        function detectLang() {
+            try {
+                var stored = localStorage.getItem(STORAGE_KEY);
+                if (stored === 'de' || stored === 'en') return stored;
+            } catch (e) { /* localStorage evtl. nicht verfügbar */ }
+            var nav = ((navigator.language || navigator.userLanguage || 'de') + '').toLowerCase();
+            return nav.indexOf('de') === 0 ? 'de' : 'en';
+        }
+
+        function applyLang(lang) {
+            document.documentElement.lang = lang;
+            var dict = translations[lang];
+            for (var id in dict) {
+                var el = document.getElementById(id);
+                if (el) el.innerHTML = dict[id];
+            }
+            var sel = document.getElementById('lang-select');
+            if (sel) sel.value = lang;
+        }
+
+        function setLang(lang) {
+            if (lang !== 'de' && lang !== 'en') return;
+            try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) { /* ignorieren */ }
+            applyLang(lang);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            applyLang(detectLang());
+            var sel = document.getElementById('lang-select');
+            if (sel) sel.addEventListener('change', function () { setLang(sel.value); });
+        });
+    })();
+    </script>
 
 </body>
 </html>
