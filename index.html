@@ -188,6 +188,16 @@
         .card .soon-note { font-size: 12.5px; color: #8a4d00; margin-top: 8px; }
 
 
+        /* Erste Schritte */
+        .steps { display: flex; flex-direction: column; gap: 16px; }
+        .step { display: flex; gap: 18px; align-items: flex-start; background: var(--paper); border: 2px solid var(--line); border-radius: 12px; padding: 20px 22px; }
+        .step-num { flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; background: var(--teal); color: var(--teal-ink); font-family: var(--font-display); font-weight: 600; font-size: 17px; display: flex; align-items: center; justify-content: center; }
+        .step-body { flex: 1; min-width: 0; }
+        .step-body h3 { font-size: 17px; margin: 0 0 4px; }
+        .step-body p { font-size: 14.5px; color: #1e293b; margin: 0; }
+        .step-img { display: block; margin-top: 12px; max-width: 320px; width: 100%; border: 2px solid var(--line); border-radius: 8px; }
+        .step-note { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
         /* Hardware */
         .hw { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
         .hw-card { position: relative; background: var(--surface); border: 2.5px solid var(--line); border-radius: 12px; padding: 24px; box-shadow: var(--shadow-lg); }
@@ -409,6 +419,52 @@
             </div>
         </section>
 
+        <!-- ===================== ERSTE SCHRITTE ===================== -->
+        <section id="steps" class="container" style="padding-top:0;">
+            <h2 class="h2" id="steps-h2">In 5 Schritten programmieren</h2>
+            <p class="lead" style="margin-bottom:28px;" id="steps-p">Board am Computer, Browser auf, loslegen.</p>
+            <div class="steps">
+                <div class="step">
+                    <span class="step-num">1</span>
+                    <div class="step-body">
+                        <h3 id="step1-h3">Board anschließen</h3>
+                        <p id="step1-p">Maker-Pi per USB-C-Kabel mit dem Computer verbinden.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <span class="step-num">2</span>
+                    <div class="step-body">
+                        <h3 id="step2-h3">Editor öffnen</h3>
+                        <p id="step2-p">Chrome oder Edge öffnen (andere Browser können nicht auf das Board schreiben), <code>mos.kidslab.de</code> aufrufen und auf „Editor öffnen" klicken.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <span class="step-num">3</span>
+                    <div class="step-body">
+                        <h3 id="step3-h3">Verbinden</h3>
+                        <p id="step3-p">Oben rechts auf „Verbinden" klicken und das Board in der Liste auswählen.</p>
+                        <img class="step-img" src="assets/img/Verbinden.png" alt="Verbinden-Knopf im Editor-Header" id="step3-img">
+                    </div>
+                </div>
+                <div class="step">
+                    <span class="step-num">4</span>
+                    <div class="step-body">
+                        <h3 id="step4-h3">Beispiel nachbauen</h3>
+                        <p id="step4-p">Dieses kleine Programm aus Blöcken zusammenstecken: Taster gedrückt → NeoPixel wechselt 10× zwischen Rot und Grün.</p>
+                        <img class="step-img" src="assets/img/Beispiel-Programm.png" alt="Beispiel-Blockprogramm: Wenn Taster gedrückt, NeoPixel 10x rot/grün blinken lassen" id="step4-img">
+                    </div>
+                </div>
+                <div class="step">
+                    <span class="step-num">5</span>
+                    <div class="step-body">
+                        <h3 id="step5-h3">Ausführen</h3>
+                        <p id="step5-p">Auf „Ausführen" klicken und schauen, was passiert.</p>
+                        <img class="step-img" src="assets/img/Ausführen.png" alt="Ausführen-Knopf im Editor-Header" id="step5-img">
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ===================== OFFEN & DATENSPARSAM ===================== -->
         <section id="offen" class="container">
             <div class="open-box">
@@ -568,6 +624,19 @@
             'hw1-tag2': 'Motor driver',
             'hw2-p': 'The same board with an ESP32 chip — unlocks radio, Wi-Fi, and IoT. In progress.',
 
+            'steps-h2': 'Programming in 5 steps',
+            'steps-p': 'Board on the computer, browser open, get going.',
+            'step1-h3': 'Connect the board',
+            'step1-p': 'Connect the Maker-Pi to the computer with a USB-C cable.',
+            'step2-h3': 'Open the editor',
+            'step2-p': 'Open Chrome or Edge (other browsers can\'t write to the board), go to <code>mos.kidslab.de</code> and click "Open editor".',
+            'step3-h3': 'Connect',
+            'step3-p': 'Click "Connect" at the top right and pick the board from the list.',
+            'step4-h3': 'Rebuild the example',
+            'step4-p': 'Snap together this small block program: button pressed → NeoPixel switches between red and green 10 times.',
+            'step5-h3': 'Run',
+            'step5-p': 'Click "Run" and see what happens.',
+
             'offen-eyebrow': 'Built for German schools',
             'offen-h2': 'Open and privacy-friendly',
             'offen-p': "makerSpaceOS is open source and runs as a static site. There's no server, no account, and no sign-up. No student data is stored or transmitted — everything happens locally in the browser.",
@@ -617,7 +686,10 @@
             'burger-label':      { attr: 'aria-label', text: 'Menu' },
             'live-editor-link':  { attr: 'aria-label', text: 'Open editor' },
             'editor-preview-img':{ attr: 'alt', text: 'makerSpaceOS editor: blocks on the left, generated Python code on the right' },
-            'lang-select':       { attr: 'title', text: 'Choose language' }
+            'lang-select':       { attr: 'title', text: 'Choose language' },
+            'step3-img':         { attr: 'alt', text: 'Connect button in the editor header' },
+            'step4-img':         { attr: 'alt', text: 'Example block program: when button pressed, blink NeoPixel red/green 10 times' },
+            'step5-img':         { attr: 'alt', text: 'Run button in the editor header' }
         };
 
         var PILL_EN = { 'pill-on': 'Available now', 'pill-soon': 'Coming soon' };
