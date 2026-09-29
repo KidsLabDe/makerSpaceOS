@@ -1,8 +1,8 @@
 /* makerSpaceOS — Design Tokens
    Crayon-Palette aus dem KidsLab Design System + Logo-Leitfarben.
-   Schriften via Google Fonts (siehe @import unten oder selbst hosten). */
-
-@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+   Schriften lokal selbst gehostet (siehe assets/fonts/, eingebunden per @font-face
+   in index.html) — kein externer Google-Fonts-Request. JetBrains Mono wird nur
+   als Fallback in der System-Font-Stack referenziert, nicht selbst gehostet. */
 
 :root {
   /* --- Markenfarben (Logo-Segmente, im Uhrzeigersinn ab oben) --- */
