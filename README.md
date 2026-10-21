@@ -341,5 +341,5 @@ Wie im Modul-Dok: RFID, Farbsensor, Joystick, IR-Fernbedienung, RTC, mechanische
 - **Browser:** Chrome oder Edge (Web Serial API)
 - **Kein Build-Schritt** für die App – reine statische HTML/JS/CSS
 - **Block-System:** markdown-getrieben (`components/*.md` → `build_blocks.js` → `blocks_db.js`)
-- **Lizenz:** tbd
+- **Lizenz:** Code unter [MIT](LICENSE), Inhalte unter [CC BY 4.0](LICENSE-CONTENT.md) (Name und Logo ausgenommen), fremde Bestandteile siehe [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)
 - **Kontakt:** gw@communitylabs.de
