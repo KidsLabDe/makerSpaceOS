@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>makerSpaceOS – In 5 Schritten programmieren (A5)</title>
+<style>
+    @font-face {
+        font-family: 'Inter'; font-weight: 100 900;
+        src: url('../assets/fonts/inter-latin.woff2') format('woff2');
+    }
+    @font-face {
+        font-family: 'Pixelify Sans'; font-weight: 400 700;
+        src: url('../assets/fonts/pixelify-latin.woff2') format('woff2');
+    }
+
+    :root {
+        --orange: #F39A1B; --yellow: #F7D94C; --teal: #4AB8A6; --teal-ink: #0d2b27; --teal-deep: #0f6b5c;
+        --sky: #4FBFE8; --purple: #A57BC3; --coral: #E98685;
+        --ink: #111111; --line: #1a1a1a; --paper: #FBF8F3; --muted: #475569;
+        --font-display: 'Pixelify Sans', ui-rounded, cursive;
+        --font-body: 'Inter', system-ui, sans-serif;
+    }
+
+    @page { size: A5 portrait; margin: 0; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+        font-family: var(--font-body); color: var(--ink);
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+
+    .sheet {
+        width: 148mm; height: 210mm; padding: 8mm 10mm 7mm;
+        display: flex; flex-direction: column; overflow: hidden;
+    }
+
+    /* ---- Kopf ---- */
+    .head { display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 2.5mm; }
+    .brand svg { height: 10mm; width: auto; }
+    .brand .word { font-family: var(--font-display); font-weight: 600; font-size: 17pt; }
+    .brand .accent { color: var(--teal); }
+    .stripe { display: flex; height: 1.4mm; margin: 3mm 0 4mm; border-radius: 1mm; overflow: hidden; }
+    .stripe span { flex: 1; }
+
+    h1 { font-family: var(--font-display); font-weight: 600; font-size: 19pt; line-height: 1.05; margin: 0 0 1mm; }
+    .lead { font-size: 10pt; color: var(--muted); margin: 0 0 3.5mm; }
+
+    /* ---- Schritte ---- */
+    .steps { display: flex; flex-direction: column; gap: 2mm; }
+    .step {
+        display: flex; gap: 3.5mm; align-items: flex-start;
+        background: var(--paper); border: 0.5mm solid var(--line); border-radius: 2.5mm;
+        padding: 2.2mm 3.5mm;
+    }
+    .num {
+        flex-shrink: 0; width: 7.5mm; height: 7.5mm; border-radius: 50%;
+        background: var(--teal); color: var(--teal-ink);
+        font-family: var(--font-display); font-weight: 600; font-size: 12pt;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .body { flex: 1; min-width: 0; }
+    .body h2 { font-size: 10.5pt; margin: 0.8mm 0 0.5mm; }
+    .body p { font-size: 8.6pt; line-height: 1.38; color: #1e293b; margin: 0; }
+    code { font-family: ui-monospace, 'SF Mono', monospace; font-size: 8.2pt; background: #fff; border: 0.3mm solid #d6d0c4; border-radius: 1mm; padding: 0 1mm; }
+    .shot { display: block; margin-top: 1.6mm; border: 0.4mm solid var(--line); border-radius: 1.5mm; }
+    .shot.strip { height: 6mm; width: auto; }
+    .step.example .body { display: flex; gap: 3.5mm; align-items: flex-start; }
+    .step.example .text { flex: 1; }
+    .step.example .shot { width: 44mm; margin-top: 0; }
+
+    /* ---- Fuß ---- */
+    .foot {
+        margin-top: auto; display: flex; align-items: center; gap: 5mm;
+        border-top: 0.4mm dashed #b9b2a5; padding-top: 3.5mm;
+    }
+    .qr { width: 24mm; height: 24mm; padding: 1.5mm; background: #fff; border: 0.5mm solid var(--line); border-radius: 2mm; flex-shrink: 0; }
+    .qr img { width: 100%; height: 100%; display: block; }
+    .foot-text { flex: 1; }
+    .foot-text .url { font-family: var(--font-display); font-weight: 600; font-size: 15pt; }
+    .foot-text p { font-size: 8.4pt; line-height: 1.4; color: var(--muted); margin: 1mm 0 0; }
+    .kidslab { height: 7mm; width: auto; align-self: flex-end; }
+</style>
+</head>
+<body>
+<div class="sheet">
+    <div class="head">
+        <div class="brand">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 100" fill="none" aria-hidden="true">
+                <g stroke-width="8" stroke-linecap="butt">
+                    <line x1="37.5" y1="11.9" x2="72.5" y2="11.9" stroke="#F39A1B"/><line x1="79.25" y1="15.797" x2="96.75" y2="46.103" stroke="#F7D94C"/><line x1="96.75" y1="53.897" x2="79.25" y2="84.203" stroke="#4AB8A6"/><line x1="72.5" y1="88.1" x2="37.5" y2="88.1" stroke="#4FBFE8"/><line x1="30.75" y1="84.203" x2="13.25" y2="53.897" stroke="#A57BC3"/><line x1="13.25" y1="46.103" x2="30.75" y2="15.797" stroke="#E98685"/>
+                </g>
+                <g fill="none" stroke-width="3.6">
+                    <circle cx="33" cy="11.9" r="5.5" stroke="#F39A1B"/><circle cx="77" cy="11.9" r="5.5" stroke="#F7D94C"/><circle cx="99" cy="50" r="5.5" stroke="#4AB8A6"/><circle cx="77" cy="88.1" r="5.5" stroke="#4FBFE8"/><circle cx="33" cy="88.1" r="5.5" stroke="#A57BC3"/><circle cx="11" cy="50" r="5.5" stroke="#E98685"/>
+                </g>
+                <polyline points="43,40 54,50 43,60" fill="none" stroke="#111111" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="59" y1="60" x2="69" y2="60" stroke="#4AB8A6" stroke-width="6.5" stroke-linecap="round"/>
+            </svg>
+            <span class="word">makerSpace<span class="accent">OS</span></span>
+        </div>
+    </div>
+    <div class="stripe">
+        <span style="background:var(--orange)"></span><span style="background:var(--yellow)"></span><span style="background:var(--teal)"></span>
+        <span style="background:var(--sky)"></span><span style="background:var(--coral)"></span><span style="background:var(--purple)"></span>
+    </div>
+
+    <h1>In 5 Schritten programmieren</h1>
+    <p class="lead">Board am Computer, Browser auf, loslegen.</p>
+
+    <div class="steps">
+        <div class="step">
+            <span class="num">1</span>
+            <div class="body">
+                <h2>Board anschließen</h2>
+                <p>Maker-Pi per USB-C-Kabel mit dem Computer verbinden.</p>
+            </div>
+        </div>
+        <div class="step">
+            <span class="num">2</span>
+            <div class="body">
+                <h2>Editor öffnen</h2>
+                <p>Chrome oder Edge öffnen (andere Browser können nicht auf das Board schreiben), <code>mos.kidslab.de</code> aufrufen und auf „Editor öffnen" klicken.</p>
+            </div>
+        </div>
+        <div class="step">
+            <span class="num">3</span>
+            <div class="body">
+                <h2>Verbinden</h2>
+                <p>Oben rechts auf „Verbinden" klicken und das Board in der Liste auswählen.</p>
+                <img class="shot strip" src="../assets/img/Verbinden.png" alt="Verbinden-Knopf im Editor-Header">
+            </div>
+        </div>
+        <div class="step example">
+            <span class="num">4</span>
+            <div class="body">
+                <div class="text">
+                    <h2>Beispiel nachbauen</h2>
+                    <p>Dieses kleine Programm aus Blöcken zusammenstecken: Taster gedrückt → NeoPixel wechselt 10× zwischen Rot und Grün.</p>
+                </div>
+                <img class="shot" src="../assets/img/Beispiel-Programm.png" alt="Beispiel-Blockprogramm">
+            </div>
+        </div>
+        <div class="step">
+            <span class="num">5</span>
+            <div class="body">
+                <h2>Ausführen</h2>
+                <p>Auf „Ausführen" klicken und schauen, was passiert.</p>
+                <img class="shot strip" src="../assets/img/Ausführen.png" alt="Ausführen-Knopf im Editor-Header">
+            </div>
+        </div>
+    </div>
+
+    <div class="foot">
+        <div class="qr"><img src="qr-mos-kidslab.svg" alt="QR-Code zu mos.kidslab.de"></div>
+        <div class="foot-text">
+            <div class="url">mos.kidslab.de</div>
+            <p>Scannen, im Browser öffnen, loslegen.<br>Kein Konto, keine Installation — alles läuft lokal im Browser.</p>
+        </div>
+        <img class="kidslab" src="../assets/img/kidslab-logo.png" alt="KidsLab">
+    </div>
+</div>
+</body>
+</html>
